@@ -1,0 +1,126 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Приложение Заметок API",
+        "version": "1.0.0",
+        "description": "API документация для управления заметками"
+    },
+    "paths": {
+        "/notes": {
+            "get": {
+                "summary": "Получить все заметки",
+                "tags": ["Notes"],
+                "responses": {
+                    "200": {
+                        "description": "List of notes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": { "$ref": "#/components/schemas/Note" }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Создать новую заметку",
+                "tags": ["Notes"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/NoteInput" }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Заметка создана",
+                        "content": {
+                            "application/json": {
+                                "schema": { "$ref": "#/components/schemas/Note" }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/notes/{id}": {
+            "put": {
+                "summary": "Обновить заметку по ID",
+                "tags": ["Notes"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "string" }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/NoteInput" }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Заметка обновлена",
+                        "content": {
+                            "application/json": {
+                                "schema": { "$ref": "#/components/schemas/Note" }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Заметка не найдена"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Удалить заметку по ID",
+                "tags": ["Notes"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Заметка удалена"
+                    },
+                    "404": {
+                        "description": "Заметка не найдена"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Note": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "string" },
+                    "name": { "type": "string" },
+                    "content": { "type": "string" }
+                }
+            },
+            "NoteInput": {
+                "type": "object",
+                "properties": {
+                    "name": { "type": "string" },
+                    "content": { "type": "string" }
+                },
+                "required": ["title", "content"]
+            }
+        }
+    }
+}

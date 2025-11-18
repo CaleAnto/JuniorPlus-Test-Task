@@ -1,0 +1,9 @@
+node-back/node_modules/
+vue-front/node_modules/
+
+*.log
+
+.DS_Store
+
+node-back/.env
+vue-front/.env

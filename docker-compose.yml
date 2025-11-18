@@ -1,0 +1,42 @@
+version: "3.9"
+name: notes_app
+
+services:
+  backend:
+    build: ./node-back
+    container_name: notes-backend
+    env_file: ./node-back/.env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_HOST: postgres
+    volumes:
+      - ./node-back:/app
+
+  frontend:
+    build: ./vue-front
+    container_name: notes-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    volumes:
+      - ./vue-front:/app:cached
+      - /app/node_modules
+
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: qwerty
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+
+volumes:
+  pgdata:
